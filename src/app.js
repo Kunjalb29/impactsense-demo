@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/", webhookRoute);
+app.use("/webhook", webhookRoute);
 
 app.get("/", (req, res) => {
   res.send("ImpactSense API Running");
