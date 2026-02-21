@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ImpactSense – Pull Request Impact Analyzer
 
 ImpactSense is a backend MVP that analyzes GitHub Pull Requests to determine impacted modules and suggest relevant test cases.
@@ -60,6 +59,5 @@ impactsense/
 ├── server.js      # Entry point
 └── ...
 ```
-=======
 # impactsense-demo
 >>>>>>> 033fe371dad5fa7a9e74b282679bb4021905df43
