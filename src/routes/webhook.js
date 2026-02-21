@@ -1,25 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const impactService = require("../services/impactService");
+const { processPullRequest } = require("../services/impactService");
 
-router.post("/webhook", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
-        const payload = req.body;
-        const action = payload.action;
+        console.log("🔔 Webhook received:", req.body.action);
 
-        console.log(`Received Webhook Event: ${action}`);
-
-        // Return 200 OK immediately to satisfy GitHub timeout
-        res.status(200).send("Webhook received");
-
-        // Process asynchronously
-        if (action === "opened" || action === "synchronize") {
-            await impactService.processPullRequest(payload);
-        } else {
-            console.log(`Skipping action: ${action}`);
+        if (
+            req.body.action === "opened" ||
+            req.body.action === "synchronize"
+        ) {
+            await processPullRequest(req.body);
         }
+
+        res.status(200).send("Webhook received");
     } catch (error) {
-        console.error("Webhook Error:", error.message);
+        console.error("❌ Webhook Error:", error.message);
+        res.status(200).send("Error handled"); // prevents 502
     }
 });
 

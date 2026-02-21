@@ -1,0 +1,9 @@
+{
+  "watch": ["src", "server.js"],
+  "ignore": [
+    "node_modules",
+    ".git",
+    "*.log",
+    ".env"
+  ]
+}
