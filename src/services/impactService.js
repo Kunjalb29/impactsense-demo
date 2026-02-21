@@ -1,6 +1,11 @@
 const TestCase = require("../models/TestCase");
 const githubService = require("./githubService");
 
+function calculateSeverity(moduleCount) {
+  if (moduleCount >= 4) return "HIGH";
+  if (moduleCount >= 2) return "MEDIUM";
+  return "LOW";
+}
 const processPullRequest = async (payload) => {
     try {
         const { action, pull_request, repository } = payload;
@@ -55,14 +60,28 @@ const processPullRequest = async (payload) => {
 };
 
 const generateReport = (impactedModules, testCaseDocs) => {
+    const severity = calculateSeverity(impactedModules.length);
+
+    let severityNote = "";
+    if (severity === "HIGH") {
+        severityNote = "High risk PR. Full regression recommended.";
+    } else if (severity === "MEDIUM") {
+        severityNote = "Moderate impact. Partial regression suggested.";
+    } else {
+        severityNote = "Low impact. Minimal testing required.";
+    }
+
     let report = "## 🚀 Impact Analysis Report\n\n";
 
-    report += "### Impacted Modules:\n";
+    report += `### 🔥 Impact Severity: ${severity}\n`;
+    report += `> ${severityNote}\n\n`;
+
+    report += "### 📂 Impacted Modules:\n";
     impactedModules.forEach((mod) => {
         report += `- **${mod}**\n`;
     });
 
-    report += "\n### Recommended Test Cases:\n";
+    report += "\n### 🧪 Recommended Test Cases:\n";
     let totalTestCases = 0;
 
     testCaseDocs.forEach((doc) => {
@@ -87,3 +106,4 @@ const generateReport = (impactedModules, testCaseDocs) => {
 };
 
 module.exports = { processPullRequest };
+
