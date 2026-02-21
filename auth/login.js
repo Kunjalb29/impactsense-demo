@@ -6,3 +6,4 @@
 // test semo 5
 // test severity 1
 // test severity 2
+// test impact 1
